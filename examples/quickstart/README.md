@@ -14,7 +14,7 @@ This is a minimal example that reads from a local CSV file and loads it into a S
 ## 🚀 Run the Plan
 
 ```bash
-kvatch query --plan examples/quickstart/plan.json --root-dataset users
+kvatch query --plan examples/quickstart/plan.json --root-dataset users  
 ```
 
 This will:

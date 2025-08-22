@@ -64,6 +64,12 @@ Or:
 
 ---
 
+### 2. Comfirm it's working wtih:
+```bash
+kvatch help
+```
+
+
 ### 3. Add to PATH (optional)
 
 ```bash
@@ -73,12 +79,10 @@ sudo mv kvatch /usr/local/bin/
 Then try:
 
 ```bash
-kvatch --help
+kvatch completion [bash|zsh|fish|powershell]
 ```
 
----
-
-### 🔧 Setup Workspace
+### 🔧 Setup the workspace
 
 ```bash
 # Initialize the local workspace at ~/.kvatch
@@ -87,21 +91,9 @@ kvatch init
 
 ---
 
-## 🧪 Run an Example Plan
+## 🧪 Getting started
 
-The easiest way to get started is by running a built-in example:
-
-```bash
-kvatch run --plan examples/quickstart/plan.json
-```
-
-This will load a CSV file and create a SQLite-backed dataset.
-
----
-
-## 📁 Explore More Examples
-
-Browse the [examples](./examples) directory for ready-to-run plans:
+The easiest way to get started is by running a built-in example, see the [examples](./examples) directory for ready-to-run plans:
 
 - Basic CSV / JSON ingestion
 - SQLite and Postgres queries

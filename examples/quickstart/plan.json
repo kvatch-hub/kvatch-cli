@@ -5,21 +5,23 @@
   },
   "datasources": [
     {
-      "name": "csv_users",
-      "type": "CSV",
+      "name": "csv_data",
+      "type": "LOCAL_FILE",
       "connection": {
-        "path": "examples/quickstart/data/users.csv"
+        "base_path": "examples/quickstart/data"
       },
-      "desc": "CSV file containing user data"
+      "description": "CSV folder containing user data"
     }
   ],
   "datasets": [
     {
       "name": "users",
-      "datasource_name": "csv_users",
-      "type": "FLAT",
+      "datasource_name": "csv_data",
+      "type": "CSV",
+      "description": "csv file containing my users",
+      "query": "users.csv",
       "config": {
-        "header": true
+        "has_headers": true
       }
     }
   ]
