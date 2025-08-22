@@ -1,0 +1,26 @@
+{
+  "storage": {
+    "type": "sqlite",
+    "filename": "quickstart.db"
+  },
+  "datasources": [
+    {
+      "name": "csv_users",
+      "type": "CSV",
+      "connection": {
+        "path": "examples/quickstart/data/users.csv"
+      },
+      "desc": "CSV file containing user data"
+    }
+  ],
+  "datasets": [
+    {
+      "name": "users",
+      "datasource_name": "csv_users",
+      "type": "FLAT",
+      "config": {
+        "header": true
+      }
+    }
+  ]
+}
