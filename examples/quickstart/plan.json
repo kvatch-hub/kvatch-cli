@@ -8,7 +8,7 @@
       "name": "csv_data",
       "type": "LOCAL_FILE",
       "connection": {
-        "base_path": "examples/quickstart/data"
+        "base_path": "/Users/jameswooltorton/development/github.com/squeakycheese75/dd-new/examples/cli/quickstart/data"
       },
       "description": "CSV folder containing user data"
     }
