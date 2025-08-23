@@ -1,6 +1,6 @@
 ## kvatch version
 
-Show Federate CLI version
+Show Kvatch CLI version
 
 ```
 kvatch version [flags]
