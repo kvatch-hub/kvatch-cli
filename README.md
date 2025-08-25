@@ -7,7 +7,7 @@ Run it **locally for free**, or sign up for early access to the upcoming **remot
 
 ## ✨ Features
 
-- 🔄 **Query anything with SQL** — SV, JSON, SQLite, Postgres, APIs (coming soon) and more
+- 🔄 **Query anything with SQL** — CSV, JSON, SQLite, Postgres, APIs (coming soon) and more
 - 🧱 **Plan-based architecture** — Define everything in one YAML or JSON file
 - 💻 **Local mode (Free)** — All processing happens locally, no cloud required
 - 🌐 **Remote mode (Coming Soon)** — Share, schedule, and orchestrate data jobs
@@ -17,7 +17,22 @@ Run it **locally for free**, or sign up for early access to the upcoming **remot
 
 ## 📦 Installation (Local Mode)
 
-### 1. Download the latest release
+### Option 1: Install via Homebrew (Recommended)
+
+```bash
+brew tap kvatch-hub/tap
+brew install kvatch
+```
+
+Then confirm it’s working:
+
+```bash
+kvatch --version
+```
+
+---
+
+### Option 2: Download the latest release manually
 
 Visit the [Releases page](https://github.com/kvatch-hub/kvatch-cli/releases/latest) and download the binary for your OS.
 
@@ -46,7 +61,7 @@ Invoke-WebRequest https://github.com/kvatch-hub/kvatch-cli/releases/latest/downl
 
 ---
 
-### 2. First Run on macOS
+### First Run on macOS
 
 macOS may block the binary since it’s unsigned:
 
@@ -64,13 +79,13 @@ Or:
 
 ---
 
-### 2. Comfirm it's working wtih:
+### Confirm it’s working:
+
 ```bash
 kvatch help
 ```
 
-
-### 3. Add to PATH (optional)
+### Add to PATH (optional)
 
 ```bash
 sudo mv kvatch /usr/local/bin/
@@ -82,6 +97,8 @@ Then try:
 kvatch completion [bash|zsh|fish|powershell]
 ```
 
+---
+
 ### 🔧 Setup the workspace
 
 ```bash
@@ -90,6 +107,7 @@ kvatch init
 ```
 
 ---
+
 
 ## 🧪 Getting started
 
@@ -115,7 +133,7 @@ Kvatch uses a single `plan.yaml` or `plan.json` file to:
 ## 🧠 Learn More
 
 - [📄 Plan file format](docs/plan-spec.md) (coming soon)
-- [❓ FAQ](docs/faq.md)
+- [❓ Docs](./docs/README.md)
 - [🧪 Examples](./examples)
 
 ---
@@ -138,4 +156,4 @@ Advanced collaboration and automation:
 - Scheduled runs and background jobs
 - Web UI, access control, audit logs
 
-📝 [Join the waitlist](https://datadictionary-core.vercel.app/#signup) for early access.
+📝 [Join the waitlist](https://www.kvatch.com/cli#signup) for early access.
