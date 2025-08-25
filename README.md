@@ -30,6 +30,22 @@ Then confirm it’s working:
 kvatch --version
 ```
 
+
+#### ⚠️ If `kvatch` isn’t found:
+Make sure Homebrew’s `bin` directory is on your `PATH`.
+
+**Apple Silicon (M1/M2/M3) Macs:**
+```bash
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+```
+
+**Intel Macs / Linuxbrew:**
+```bash
+echo 'eval "$(/usr/local/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/usr/local/bin/brew shellenv)"
+```
+
 ---
 
 ### Option 2: Download the latest release manually
