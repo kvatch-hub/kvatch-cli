@@ -1,0 +1,24 @@
+{
+  "storage": {
+    "type": "sqlite",
+    "filename": "jsonjoin.db"
+  },
+  "connectors": [
+    {
+      "name": "employees",
+      "type": "LOCAL_FILE",
+      "connection": {
+        "base_path": "/examples/json_join/data/employees.json"
+      },
+      "description": "A folder containing our data in json format"
+    }
+  ],
+  "datasets": [
+    {
+      "name": "all_employees",
+      "datasource_name": "employees",
+      "type": "JSOM",
+      "query": "SELECT * FROM data"
+    }
+  ]
+}
