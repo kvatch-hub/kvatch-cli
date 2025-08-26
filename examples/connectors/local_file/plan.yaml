@@ -1,4 +1,4 @@
-name: connector_example_local_files 
+name: local_files_example 
 
 storage:
   type: sqlite
