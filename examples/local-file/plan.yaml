@@ -1,8 +1,8 @@
-name: local_files_example 
+name: localfile_example 
 
 storage:
   type: sqlite
-  data_store_path: local_file_example.db
+  data_store_path: localfile_example.db
 
 # CONNECTORS: Define where and how to access data (connections)
 connectors:
@@ -37,16 +37,6 @@ datasets:
     dedupe_key:
      - project_id
 
-# Copy of the projects file in JSON
-  # - name: all_projects
-  #   connector_name: projects
-  #   type: JSON
-  #   query: "SELECT * FROM projects"
-  #   config:
-  #     timeout: 30
-  #   dedupe_key:
-  #    - project_id
-
   - name: employee_projects
     connector_name: federated
     type: SQL
@@ -60,6 +50,16 @@ datasets:
     children:
       - dataset_name: all_employees
       - dataset_name: all_projects
+
+  # Copy of the projects file in JSON
+  # - name: all_projects
+  #   connector_name: projects
+  #   type: JSON
+  #   query: "SELECT * FROM projects"
+  #   config:
+  #     timeout: 30
+  #   dedupe_key:
+  #    - project_id
 
 output:
   dataset_name: employee_projects
