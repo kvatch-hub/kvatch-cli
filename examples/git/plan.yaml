@@ -1,0 +1,28 @@
+name: connector_example_git
+storage:
+  type: sqlite
+  data_store_path: git_connector_example.db
+
+# CONNECTORS: Define where and how to access data (connections)
+connectors:
+  - name: kvatch-git-repo
+    type: GIT
+    connection:
+      repo: "https://github.com/kvatch-hub/kvatch-cli.git"
+      path: "examples/quickstart/data"
+      branch: "main"  
+    desc: "Folder with my data"
+
+# DATASETS: Define how to process and translate data (plugins)
+datasets:
+  - name: users
+    connector_name: kvatch-git-repo
+    type: CSV
+    query: "users.csv"
+    description: "csv file containing my users"
+    config:
+      timeout: 30
+      has_headers: true
+
+output:
+  dataset_name: users
