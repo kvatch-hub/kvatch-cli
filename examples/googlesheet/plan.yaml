@@ -21,7 +21,7 @@ datasets:
     type: GOOGLESHEET
     query: "{}"
     description: "my portfolio on google sheets"
-    config:
+    options:
       timeout: 30
   
 output:

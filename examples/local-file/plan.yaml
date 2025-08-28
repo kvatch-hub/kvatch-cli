@@ -23,7 +23,7 @@ datasets:
     connector_name: employees
     type: JSON
     query: "SELECT * FROM data"
-    config:
+    options:
       timeout: 30
     dedupe_key:
      - id
@@ -32,7 +32,7 @@ datasets:
     connector_name: projects
     type: YAML
     query: "SELECT * FROM projects"
-    config:
+    options:
       timeout: 30
     dedupe_key:
      - project_id
@@ -45,7 +45,7 @@ datasets:
             p.name as project_name, p.budget
       FROM all_employees e
       JOIN all_projects p ON e.id = p.owner_id
-    config:
+    options:
       timeout: 30
     children:
       - dataset_name: all_employees
@@ -56,7 +56,7 @@ datasets:
   #   connector_name: projects
   #   type: JSON
   #   query: "SELECT * FROM projects"
-  #   config:
+  #  options:
   #     timeout: 30
   #   dedupe_key:
   #    - project_id

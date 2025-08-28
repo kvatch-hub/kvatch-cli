@@ -33,7 +33,7 @@ datasets:
     connector_name: books_db
     type: SQL
     query: "SELECT name as title, author, review FROM books"
-    config:
+    options:
       timeout: 30
   
   - name: authors
@@ -43,7 +43,7 @@ datasets:
     dedupe_key:
      - id
      - slug
-    config:
+    options:
       timeout: 30
 
   # JOIN operation using the federated connector
@@ -52,7 +52,7 @@ datasets:
     type: SQL
     query: |
       SELECT a.name, b.title as title, b.review FROM authors a JOIN books b ON a.slug = b.author
-    config:
+    options:
       timeout: 60
     children:
       - dataset_name: authors

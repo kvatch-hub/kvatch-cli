@@ -20,7 +20,7 @@ datasets:
     type: CSV
     query: "users.csv"
     description: "csv file containing my users"
-    config:
+    options:
       timeout: 30
       has_headers: true
 

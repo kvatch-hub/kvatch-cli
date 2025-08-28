@@ -22,7 +22,7 @@ datasets:
     connector_name: issuers
     type: CSV
     query: ""
-    config:
+    options:
       timeout: 30
       has_headers: true
     dedupe_key:
@@ -32,7 +32,7 @@ datasets:
     connector_name: payments
     type: JSON
     query: "SELECT * FROM payments"
-    config:
+    options:
       timeout: 30
 
   - name: joined_payments
@@ -45,7 +45,7 @@ datasets:
         i.scheme, i.brand, i.card_type, i.country, i.bank_name
       FROM payment_data p
       LEFT JOIN issuer_data i ON p.bin = i.bin
-    config:
+    options:
       timeout: 30
     children:
       - dataset_name: issuer_data
@@ -53,3 +53,4 @@ datasets:
 
 output:
   dataset_name: joined_payments
+  verbose: true
