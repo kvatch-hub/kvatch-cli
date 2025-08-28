@@ -1,6 +1,7 @@
 name: postgres-example
 storage:
   type: sqlite
+  data_store_path: postgres_example.db
 
 # CONNECTORS: Define where and how to access data (connections)
 connectors:
@@ -59,3 +60,4 @@ datasets:
       - dataset_name: books
 output:
   dataset_name: author_books
+  verbose: true
