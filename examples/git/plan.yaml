@@ -9,7 +9,7 @@ connectors:
     type: GIT
     connection:
       repo: "https://github.com/kvatch-hub/kvatch-cli.git"
-      path: "examples/quickstart/data"
+      path: "examples/git/data"
       branch: "main"  
     desc: "Folder with my data"
 
@@ -23,6 +23,11 @@ datasets:
     options:
       timeout: 30
       has_headers: true
+    column_order: 
+      - id
+      - email 
+      - name
+
 
 output:
   dataset_name: users
