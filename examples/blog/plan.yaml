@@ -15,7 +15,7 @@ connectors:
 
 # DATASETS: Define how to process and translate data (plugins)
 datasets:
-  - name: cpius
+  - name: cp-ius
     connector_name: cpi-us-git-repo
     type: CSV
     query: "cpiai.csv"
@@ -25,6 +25,4 @@ datasets:
       has_headers: true
 
 output:
-  dataset_name: cpius
-  verbose: true
-  limit: 5
+  dataset_name: cp-ius
