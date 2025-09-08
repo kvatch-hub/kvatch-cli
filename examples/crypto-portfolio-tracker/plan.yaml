@@ -1,0 +1,63 @@
+name: crypto_portfolio_example
+storage:
+  type: sqlite
+  data_store_path: crypto_portfolio_example.db
+
+# CONNECTORS: Define where and how to access data (connections)
+connectors:
+  - name: coin_gecko_api
+    type: API
+    connection:
+      url: "https://api.coingecko.com/api/v3/simple/price"
+      method: GET
+      query_params:
+        ids: bitcoin,ethereum
+        vs_currencies: usd
+      response_path: "$"  # optional JSONPath
+    
+  - name: holdings_sheet
+    type: GOOGLESHEET
+    connection:
+      spreadsheet_id: "1DYEHzASo9D8GHKpTCL_6ia2vDVoTaMSQiLhR2y7TGRQ"
+      read_range: "holdings"
+    desc: "Your crypto holdings"
+
+# DATASETS: Define how to process and translate data (plugins)
+datasets:
+  - name: prices
+    connector_name: coin_gecko_api
+    type: JSON
+    options:
+      normalize_nested_objects: true
+      normalized_key_field_name: coin
+      normalized_value_prefix: price_
+    query: "$"  # top-level JSON object
+    dedupe_key: 
+      - coin
+
+  - name: holdings
+    connector_name: holdings_sheet
+    type: GOOGLESHEET
+    config:
+      header_row_no: 1
+    query: "holdings"
+
+  - name: portfolio_value
+    connector_name: federated
+    type: SQL
+    query: |
+      SELECT
+        h.coin,
+        h.holding,
+        p.price_usd,
+        ROUND(h.holding * p.price_usd, 2) AS total_value_usd
+      FROM holdings h
+      JOIN prices p ON h.coin = p.coin
+    children:
+      - dataset_name: holdings
+      - dataset_name: prices
+
+output:
+  dataset_name: portfolio_value
+  format: table
+  verbose: true
