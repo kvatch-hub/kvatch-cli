@@ -138,4 +138,4 @@ No pipelines. No integration glue. Just SQL.
 
 ---
 
-**Kvatch** is open-source and built for curious developers. Join the [GitHub repo](https://github.com/kvatch-hub/kvatch-cli) and start federating your data.
+**Kvatch-CLI** is free and built for curious developers. Join the [GitHub repo](https://github.com/kvatch-hub/kvatch-cli) and start federating your data.
