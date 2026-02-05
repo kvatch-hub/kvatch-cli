@@ -1,0 +1,28 @@
+name: googlesheet_example
+storage:
+  type: sqlite
+  data_store_path: googlesheet_example.db
+
+# CONNECTORS: Define where and how to access data (connections)
+connectors:
+  - name: my_googlesheet
+    type: GOOGLESHEET
+    connection:
+      spreadsheet_id: "${GOOGLESHEET_SPREADSHEET_ID}"  # required
+      api_key: "${GOOGLESHEET_API_KEY}"  # required
+      read_range: "Portfolio!A:B" # required
+      header_row_no: 0 
+    desc: "My gsheets Portfolio"
+
+# DATASETS: Define how to process and translate data (plugins)
+datasets:
+  - name: portfolio
+    connector_name: my_googlesheet
+    type: GOOGLESHEET
+    query: "{}"
+    description: "my portfolio on google sheets"
+    options:
+      timeout: 30
+  
+output:
+  dataset_name: portfolio

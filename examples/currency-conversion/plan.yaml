@@ -1,0 +1,115 @@
+name: currency_conversion_example
+
+storage:
+  type: sqlite
+  data_store_path: currency_conversion_example.db
+
+connectors:
+  # --- Google Sheets connector ---
+  - name: expenses_sheet
+    type: googlesheet
+    connection:
+      spreadsheet_id: "1rtM2nL31GLtS6kU2ZE91wb8dfhb34YRzmtG0lQKULZg"
+      read_range: "expenses"
+    desc: "Expenses in various currencies"
+
+  # --- API Frankfurter connector (clean: connection only) ---
+  - name: fx_api
+    type: api
+    desc: "Live EUR FX rates"
+    connection:
+      base_url: "https://api.frankfurter.app"
+      default_headers:
+        Accept: "application/json"
+      auth:
+        type: none
+      rate_limit:
+        requests_per_minute: 60
+      cache:
+        ttl: "5m"
+
+
+datasets:
+  # --- Raw expenses dataset from Google Sheets ---
+  - name: expenses
+    type: googlesheet
+    connector_name: expenses_sheet
+    desc: "Sheet with columns: date, category, amount, currency"
+
+    options:
+      header_row_no: 1
+      enable_streaming: false
+
+    query: "expenses"
+
+
+  # --- FX rates Dataset using API---
+  - name: fx_rates
+    type: api
+    connector_name: fx_api
+
+    options:
+      params:
+        base: "EUR"
+
+      request:
+        method: GET
+        path: "/latest"
+        query:
+          from: "{{ base }}"
+        headers: {}
+        body: null
+
+      response:
+        format: json
+        extract: "$"
+        normalize:
+          enabled: true
+          key_field: "currency"
+          value_prefix: "rate_"
+
+      pagination:
+        type: none
+
+    dedupe:
+      - currency
+
+    desc: "Latest FX rates (EUR base)"
+
+  - name: expenses_converted
+    connector_name: federated
+    type: sql
+
+    options:
+      query: |
+        SELECT
+          e.date,
+          e.category,
+          e.amount,
+          e.currency,
+          CASE
+            WHEN TRIM(UPPER(e.currency)) = 'EUR' THEN 1.0
+            ELSE r.rate_value
+          END AS fx_rate,
+          ROUND(
+            e.amount /
+            CASE
+              WHEN TRIM(UPPER(e.currency)) = 'EUR' THEN 1.0
+              ELSE r.rate_value
+            END,
+          2) AS amount_eur
+        FROM expenses e
+        LEFT JOIN fx_rates r 
+          ON TRIM(UPPER(e.currency)) = TRIM(UPPER(r.currency))
+      params: {}   # required for SQL plugin
+
+    children:
+      - dataset_name: expenses
+      - dataset_name: fx_rates
+
+    desc: "Expenses converted into EUR"
+
+output:
+  dataset_name: expenses_converted
+  format: table
+  verbose: true

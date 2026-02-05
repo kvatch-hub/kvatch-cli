@@ -99,7 +99,7 @@ Defines how each dataset should be processed.
   connector_name: books_db
   type: SQL
   query: SELECT * FROM books
-  dedupe_key: [id]
+  dedupe: [id]
 ```
 
 | Field          | Type         | Description                                      |
@@ -109,7 +109,7 @@ Defines how each dataset should be processed.
 | `type`         | string       | Plugin type (e.g., `SQL`, `CSV`, `JSON`)         |
 | `query`        | string       | SQL query, filename, or range                    |
 | `config`       | object       | Plugin-specific options                          |
-| `dedupe_key`   | array        | Keys for deduplication (optional)                |
+| `dedupe`       | array        | Keys for deduplication (optional)                |
 | `children`     | array        | Dependency datasets for joins                    |
 
 ---

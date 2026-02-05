@@ -1,0 +1,110 @@
+name: crypto_portfolio
+
+storage:
+  type: sqlite
+  data_store_path: crypto_portfolio.db
+
+connectors:
+  # --- API Coingecko example ---
+  - name: coin_gecko
+    type: api
+    connection:
+      base_url: "https://api.coingecko.com/api/v3"
+      default_headers:
+        Accept: "application/json"
+      auth:
+        type: none
+      rate_limit:
+        requests_per_minute: 60
+      cache:
+        ttl: "1m"
+
+  # --- Google Sheet for holdings ---
+  - name: holdings_sheet
+    type: googlesheet
+    connection:
+      spreadsheet_id: "1DYEHzASo9D8GHKpTCL_6ia2vDVoTaMSQiLhR2y7TGRQ"
+      read_range: "holdings"
+
+datasets:
+  # ---------------------------------------------------------
+  # Dataset: Holdings (Google Sheet)
+  # ---------------------------------------------------------
+  - name: holdings
+    type: googlesheet
+    connector_name: holdings_sheet
+
+    options:
+      header_row_no: 1
+      enable_streaming: false
+
+    query: "holdings"
+
+    dedupe:
+      - coin
+
+  # ---------------------------------------------------------
+  # Dataset: Prices (API)
+  # ---------------------------------------------------------
+  - name: prices
+    type: api
+    connector_name: coin_gecko
+
+    options:
+        inject_timestamp: true
+        timestamp_field: "fetched_at"
+
+        vars:
+          symbols: "bitcoin,ethereum"
+
+        request:
+          method: GET
+          path: "/simple/price"
+          params:
+            ids: "{{ symbols }}"
+            vs_currencies: "usd"
+          headers: {}
+          body: null
+
+        pagination:
+          type: none
+
+        response:
+          format: json
+          extract: "$"
+          normalize:
+            enabled: true
+            key_field: "coin"
+            value_prefix: "price_"
+
+    dedupe:
+      - coin
+
+  # ---------------------------------------------------------
+  # Dataset: Final SQL (Federated Join)
+  # ---------------------------------------------------------
+  - name: portfolio_value
+    type: sql
+    connector_name: federated
+
+    options:
+      query: |
+          SELECT
+            h.coin,
+            h.holding,
+            p.price_usd,
+            ROUND(h.holding * p.price_usd, 2) AS total_value_usd
+          FROM holdings h
+          JOIN prices p ON h.coin = p.coin
+      params: {}
+      dedupe:
+          - coin
+
+    children:
+      - dataset_name: holdings
+      - dataset_name: prices
+
+output:
+  dataset_name: portfolio_value
+  format: table
+  verbose: true

@@ -1,0 +1,70 @@
+name: github_repo_health
+storage:
+  type: sqlite
+  data_store_path: github_health.db
+
+connectors:
+  - name: kvatch_repo
+    type: GIT
+    connection:
+      repo: "https://github.com/kvatch-hub/kvatch-cli.git"
+      path: "examples/git/data"
+      branch: "main"  
+    desc: "Folder with my data"
+
+  - name: github_api
+    type: API
+    connection:
+      url: "https://api.github.com/repos/kvatch-hub/kvatch-cli/issues"
+      method: "GET"
+      headers:
+        Accept: "application/vnd.github+json"
+        User-Agent: "kvatch-demo"
+
+datasets:
+  - name: repo_files
+    connector_name: kvatch_repo
+    type: CSV
+    query: "users.csv" # we’ll just read metadata here
+
+  - name: repo_issues
+    connector_name: github_api
+    type: JSON
+    options:
+      flatten_nested_objects: true
+    dedupe:
+      - id
+    desc: "GitHub issues from the repo"
+
+  # Issue summary
+  - name: repo_issue_summary
+    connector_name: federated
+    type: SQL
+    query: |
+      SELECT
+        state,
+        COUNT(*) AS issue_count,
+        MIN(created_at) AS first_issue_date,
+        MAX(created_at) AS last_issue_date
+      FROM repo_issues
+      GROUP BY state
+    children:
+      - dataset_name: repo_issues
+
+  # Final repo health dataset
+  - name: kvatch_repo
+    connector_name: federated
+    type: SQL
+    query: |
+      SELECT
+        (SELECT COUNT(*) FROM repo_files) AS total_files,
+        (SELECT COUNT(*) FROM repo_issues WHERE state = 'open') AS open_issues,
+        (SELECT COUNT(*) FROM repo_issues WHERE state = 'closed') AS closed_issues,
+        (SELECT MIN(created_at) FROM repo_issues) AS first_issue_date,
+        (SELECT MAX(created_at) FROM repo_issues) AS last_issue_date
+    children:
+      - dataset_name: repo_files
+      - dataset_name: repo_issues
+
+output:
+  dataset_name: kvatch_repo

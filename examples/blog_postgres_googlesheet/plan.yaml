@@ -1,0 +1,63 @@
+name: blog-postgres-googlesheet_example
+storage:
+  type: sqlite
+  data_store_path: googlesheet_example.db
+
+connectors:
+  - name: projects_db
+    type: postgres
+    connection:
+      host: "ep-jolly-shadow-a2hk38fo-pooler.eu-central-1.aws.neon.tech"
+      port: 5432
+      database: "examples"
+      username: "kvatch_reader"
+      password: "Readonly123!"
+      ssl_mode: require
+      desc: "Readonly connection to the projects database hosted on Neon"
+
+  - name: team_sheets
+    type: googlesheet
+    connection:
+      spreadsheet_id: "1sgZU3bv0CGq0nOD6xTvJAK9YcedFJjE54_TcnjFwRhE"
+      read_range: "employees"  
+    desc: "Employee info from Google Sheets"
+
+datasets:
+  - name: projects
+    connector_name: projects_db
+    type: sql
+   
+    options:
+      query: "SELECT id, name, owner_email FROM projects"
+      timeout: 30
+
+  - name: employees
+    connector_name: team_sheets
+    type: googlesheet
+    
+    options:
+      header_row_no: 1
+    query: "employees"
+
+  - name: project_with_owner
+    connector_name: federated
+    type: sql
+    options:
+      query: |
+        SELECT
+          p.name AS project_name,
+          e.employee_name,
+          e.department
+        FROM projects p
+        JOIN employees e ON p.owner_email = e.email
+
+    children:
+      - dataset_name: projects
+      - dataset_name: employees
+
+output:
+  dataset_name: project_with_owner
+  verbose: true
+  format: table
+  limit: 10
+  

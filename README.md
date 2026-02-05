@@ -1,13 +1,23 @@
 # 🚀 Kvatch CLI
 
-**Kvatch CLI** lets you query multiple data sources — databases, files, and (soon) APIs — as if they were a single SQL database.  
+## The Problem
+Ever spent hours exporting data from Postgres, downloading a CSV from Google Sheets, 
+converting JSON from an API, just to join them in Excel? That's the pain Kvatch eliminates.
+
+## Introducing
+**Kvatch CLI** lets you query multiple data sources — databases, files, and APIs — as if they were a single SQL database.  
 Run it **locally for free**, or sign up for early access to the upcoming **remote mode** for team collaboration and orchestration.
 
 ---
 
+# Example: Join CSV and JSON data
+```bash
+kvatch query --plan examples/quickstart/plan.yaml
+```
+
 ## ✨ Features
 
-- 🔄 **Query anything with SQL** — CSV, JSON, SQLite, Postgres, APIs (coming soon), and more  
+- 🔄 **Query anything with SQL** — CSV, JSON, SQLite, Postgres, APIs, and more  
 - 🧱 **Plan-based architecture** — Define everything in a single YAML or JSON file  
 - 💻 **Local mode (Free)** — All processing happens locally, no cloud required  
 - 🌐 **Remote mode (Coming Soon)** — Share, schedule, and orchestrate data jobs with your team  
@@ -50,29 +60,6 @@ eval "$(/usr/local/bin/brew shellenv)"
 ### Option 2: Download the Latest Release Manually
 
 Grab the latest binary from the [Releases page](https://github.com/kvatch-hub/kvatch-cli/releases/latest).
-
-**Apple Silicon (M1/M2/M3):**
-```bash
-curl -L https://github.com/kvatch-hub/kvatch-cli/releases/latest/download/kvatch-darwin-arm64 -o kvatch
-chmod +x kvatch
-```
-
-**Intel Macs:**
-```bash
-curl -L https://github.com/kvatch-hub/kvatch-cli/releases/latest/download/kvatch-darwin-amd64 -o kvatch
-chmod +x kvatch
-```
-
-**Linux (x86_64):**
-```bash
-curl -L https://github.com/kvatch-hub/kvatch-cli/releases/latest/download/kvatch-linux-amd64 -o kvatch
-chmod +x kvatch
-```
-
-**Windows (PowerShell):**
-```powershell
-Invoke-WebRequest https://github.com/kvatch-hub/kvatch-cli/releases/latest/download/kvatch-windows-amd64.exe -OutFile kvatch.exe
-```
 
 ---
 
@@ -168,3 +155,7 @@ Kvatch CLI is:
 - Web UI, access control, audit logs  
 
 📝 [Join the waitlist](https://www.kvatch.com/cli#signup) for early access.  
+
+![Version](https://img.shields.io/github/v/release/kvatch-hub/kvatch-cli)
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Downloads](https://img.shields.io/github/downloads/kvatch-hub/kvatch-cli/total)

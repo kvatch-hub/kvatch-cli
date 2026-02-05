@@ -1,0 +1,28 @@
+name: aws_s3_example
+storage:
+  type: sqlite
+  data_store_path: aws_s3_example.db
+
+
+connectors:
+  - name: s3_raw_data
+    type: S3
+    connection:
+      region: "eu-central-1"
+      bucket: "my-analytics-bucket"
+      base_prefix: "incoming/2025-09-04/"
+
+datasets:
+  - name: users_csv
+    connector_name: s3_raw_data
+    # Query is the object key relative to base_prefix
+    query: "users.csv"
+    plugin: CSV
+    config:
+      header_row: true
+
+output:
+  dataset_name: users_csv
+  verbose: true
+  format: table
+  limit: 10
